@@ -33,6 +33,7 @@ export default function ComparedCurrenciesManager() {
 
 	return (
 		<Stack spacing={1}>
+			{/* ---------- Add Currency ---------- */}
 			<Typography
 				variant="subtitle2"
 				sx={{ mb: 0.5, color: 'text.secondary', fontWeight: 500 }}
@@ -40,7 +41,6 @@ export default function ComparedCurrenciesManager() {
 				Add currency
 			</Typography>
 
-			{/* Searchable Autocomplete input */}
 			<Autocomplete
 				size="small"
 				options={available}
@@ -55,25 +55,64 @@ export default function ComparedCurrenciesManager() {
 				clearOnEscape
 			/>
 
-			<Typography variant="subtitle2">
-				Compared currencies ({compared.length}/{MAX})
-			</Typography>
+			{/* ---------- Compared Currencies Section ---------- */}
+			<Box
+				sx={{
+					borderTop: '1px solid #eee',
+					mt: 1.5,
+					pt: 1.5,
+				}}
+			>
+				<Stack
+					direction="row"
+					alignItems="center"
+					justifyContent="space-between"
+					sx={{ mb: 1 }}
+				>
+					<Typography
+						variant="subtitle2"
+						sx={{
+							color: 'text.secondary',
+							fontWeight: 600,
+						}}
+					>
+						Compared currencies
+					</Typography>
 
-			{/* Active currency chips */}
-			<Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-				{compared.map((code) => (
 					<Chip
-						key={code}
-						label={code.toUpperCase()}
-						onDelete={
-							compared.length > MIN
-								? () => dispatch(removeCompared(code))
-								: undefined
-						}
-						color="primary"
-						variant="outlined"
+						size="small"
+						label={`${compared.length}/${MAX}`}
+						color={compared.length >= MAX ? 'error' : 'default'}
+						sx={{
+							fontWeight: 600,
+							height: 22,
+							backgroundColor:
+								compared.length >= MAX ? '#ffebee' : '#f5f5f5',
+						}}
 					/>
-				))}
+				</Stack>
+
+				<Box
+					sx={{
+						display: 'flex',
+						gap: 1,
+						flexWrap: 'wrap',
+					}}
+				>
+					{compared.map((code) => (
+						<Chip
+							key={code}
+							label={code.toUpperCase()}
+							onDelete={
+								compared.length > MIN
+									? () => dispatch(removeCompared(code))
+									: undefined
+							}
+							color="primary"
+							variant="outlined"
+						/>
+					))}
+				</Box>
 			</Box>
 		</Stack>
 	);
