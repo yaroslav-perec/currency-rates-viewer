@@ -106,9 +106,11 @@ export default function CurrencyTable({ selectedDate }: { selectedDate: string }
 			<TableContainer
 				component={Paper}
 				sx={{
-					maxHeight: 400,
-					overflow: 'auto',
+					maxHeight: { xs: 'none', sm: 400 },
+					overflowX: 'auto',
+					overflowY: { xs: 'visible', sm: 'auto' },
 					borderRadius: 2,
+					overflow: 'auto',
 				}}
 			>
 				<Table size="small" stickyHeader sx={{ minWidth: 700 }}>
