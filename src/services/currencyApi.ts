@@ -2,16 +2,27 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export type CurrencyCode = string;
 
+interface CurrenciesResponse {
+	[code: string]: string;
+}
+
+interface RatesResponse {
+	date: string;
+	[key: string]: unknown;
+}
+
+const BASE_API_URL = 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@';
+const CURRENCIES_LIST_URL = `${BASE_API_URL}latest/v1/currencies.json`;
+
 export const currencyApi = createApi({
 	reducerPath: 'currencyApi',
-	baseQuery: fetchBaseQuery({ baseUrl: '/' }),
+	baseQuery: fetchBaseQuery(), // ⚠️ no baseUrl — we’ll use full URLs
 	endpoints: (builder) => ({
-		getCurrenciesList: builder.query<Record<string, string>, void>({
+		getCurrenciesList: builder.query<CurrenciesResponse, void>({
 			queryFn: async () => {
-				const url =
-					'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies.json';
-				const res = await fetch(url);
-				const data = await res.json();
+				const res = await fetch(CURRENCIES_LIST_URL);
+				if (!res.ok) return { error: { status: res.status, data: 'Failed to fetch currencies list' } };
+				const data = (await res.json()) as CurrenciesResponse;
 				return { data };
 			},
 		}),
@@ -20,10 +31,23 @@ export const currencyApi = createApi({
 			{ date: string; base: string }
 		>({
 			queryFn: async ({ date, base }) => {
-				const url = `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@${date}/v1/currencies/${base}.json`;
+				const url = `${BASE_API_URL}${date}/v1/currencies/${base}.json`;
 				const res = await fetch(url);
-				const json = await res.json();
-				return { data: { date: json.date ?? date, base, rates: json[base] } };
+				if (!res.ok)
+					return {
+						error: { status: res.status, data: `Failed to fetch rates for ${base} on ${date}` },
+					};
+
+				const json = (await res.json()) as RatesResponse;
+				const rates = json[base] as Record<string, number> | undefined;
+
+				if (!rates) {
+					return {
+						error: { status: 500, data: `Invalid response for base "${base}"` },
+					};
+				}
+
+				return { data: { date: (json.date as string) ?? date, base, rates } };
 			},
 		}),
 	}),
