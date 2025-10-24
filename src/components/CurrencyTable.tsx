@@ -8,54 +8,23 @@ import {
 	TableContainer,
 	TableHead,
 	TableRow,
+	TableSortLabel,
 	Typography,
 } from '@mui/material';
-import { Fragment, useMemo } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import { useAppSelector } from '../app/hooks';
 import { last7DaysFrom } from '../utils/date';
-import { useGetRatesByDateAndBaseQuery } from '../services/currencyApi';
+
+type Order = 'asc' | 'desc';
 
 function formatRate(n?: number) {
 	if (n == null || Number.isNaN(n)) return '—';
 	return n.toFixed(4);
 }
 
-function DayRow({ date, base, compared }: {
+interface RateRow {
 	date: string;
-	base: string;
-	compared: string[];
-}) {
-	const { data, isFetching, isError } = useGetRatesByDateAndBaseQuery({
-		date,
-		base,
-	});
-
-	if (isFetching && !data)
-		return (
-			<TableRow>
-				<TableCell colSpan={compared.length + 1}>
-					<LinearProgress />
-				</TableCell>
-			</TableRow>
-		);
-
-	if (isError)
-		return (
-			<TableRow>
-				<TableCell colSpan={compared.length + 1}>
-					<Alert severity="error">Failed to load rates for {date}</Alert>
-				</TableCell>
-			</TableRow>
-		);
-
-	return (
-		<TableRow>
-			<TableCell>{date}</TableCell>
-			{compared.map((c) => (
-				<TableCell key={c}>{formatRate(data?.rates[c])}</TableCell>
-			))}
-		</TableRow>
-	);
+	[key: string]: number | string;
 }
 
 export default function CurrencyTable({ selectedDate }: { selectedDate: string }) {
@@ -63,26 +32,136 @@ export default function CurrencyTable({ selectedDate }: { selectedDate: string }
 	const compared = useAppSelector((s) => s.currencies.compared);
 	const days = useMemo(() => last7DaysFrom(selectedDate), [selectedDate]);
 
+	const [rows, setRows] = useState<RateRow[]>([]);
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState<string | null>(null);
+
+	const [orderBy, setOrderBy] = useState<string>('date');
+	const [order, setOrder] = useState<Order>('desc');
+
+	useEffect(() => {
+		let isCancelled = false;
+
+		async function fetchRates() {
+			setLoading(true);
+			setError(null);
+
+			try {
+				const results = await Promise.all(
+					days.map(async (d) => {
+						const url = `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@${d}/v1/currencies/${base}.json`;
+						const res = await fetch(url);
+						const json = await res.json();
+						return { date: d, ...json[base] };
+					})
+				);
+				if (!isCancelled) setRows(results);
+			} catch {
+				if (!isCancelled) setError('Failed to load exchange rates');
+			} finally {
+				if (!isCancelled) setLoading(false);
+			}
+		}
+
+		fetchRates();
+		return () => {
+			isCancelled = true;
+		};
+	}, [base, days]);
+
+	/* ---------------- Sorting ---------------- */
+	const sortedRows = useMemo(() => {
+		const sorted = [...rows];
+		sorted.sort((a, b) => {
+			const av = a[orderBy];
+			const bv = b[orderBy];
+			if (typeof av === 'string' && typeof bv === 'string') {
+				return order === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+			}
+			if (typeof av === 'number' && typeof bv === 'number') {
+				return order === 'asc' ? av - bv : bv - av;
+			}
+			return 0;
+		});
+		return sorted;
+	}, [rows, orderBy, order]);
+
+	const handleSort = (key: string) => {
+		if (orderBy === key) {
+			setOrder(order === 'asc' ? 'desc' : 'asc');
+		} else {
+			setOrderBy(key);
+			setOrder('asc');
+		}
+	};
+
 	return (
 		<Fragment>
-			<Typography variant="subtitle2" sx={{ mb: 1 }}>
+			<Typography variant="body2" sx={{ mb: 2, color: 'text.secondary' }}>
 				Showing {base.toUpperCase()} against{' '}
 				{compared.map((c) => c.toUpperCase()).join(', ')}
 			</Typography>
+
 			<TableContainer component={Paper}>
 				<Table size="small">
-					<TableHead>
+					<TableHead sx={{ bgcolor: 'grey.100' }}>
 						<TableRow>
-							<TableCell>Date</TableCell>
+							<TableCell sortDirection={orderBy === 'date' ? order : false}>
+								<TableSortLabel
+									active={orderBy === 'date'}
+									direction={orderBy === 'date' ? order : 'asc'}
+									onClick={() => handleSort('date')}
+								>
+									Date
+								</TableSortLabel>
+							</TableCell>
 							{compared.map((c) => (
-								<TableCell key={c}>{c.toUpperCase()}</TableCell>
+								<TableCell
+									key={c}
+									align="right"
+									sortDirection={orderBy === c ? order : false}
+								>
+									<TableSortLabel
+										active={orderBy === c}
+										direction={orderBy === c ? order : 'asc'}
+										onClick={() => handleSort(c)}
+									>
+										{c.toUpperCase()}
+									</TableSortLabel>
+								</TableCell>
 							))}
 						</TableRow>
 					</TableHead>
+
 					<TableBody>
-						{days.map((d) => (
-							<DayRow key={d} date={d} base={base} compared={compared} />
-						))}
+						{loading && (
+							<TableRow>
+								<TableCell colSpan={compared.length + 1}>
+									<LinearProgress />
+								</TableCell>
+							</TableRow>
+						)}
+
+						{error && (
+							<TableRow>
+								<TableCell colSpan={compared.length + 1}>
+									<Alert severity="error">{error}</Alert>
+								</TableCell>
+							</TableRow>
+						)}
+
+						{!loading &&
+							!error &&
+							sortedRows.map((row) => (
+								<TableRow key={row.date as string}>
+									<TableCell>{row.date}</TableCell>
+									{compared.map((c) => (
+										<TableCell key={c} align="right">
+											{formatRate(row[c] as number)}
+										</TableCell>
+									))}
+								</TableRow>
+							))}
 					</TableBody>
 				</Table>
 			</TableContainer>

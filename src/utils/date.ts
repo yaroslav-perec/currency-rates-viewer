@@ -1,29 +1,45 @@
+// utils/date.ts
 export const DAYS_BACK_LIMIT = 90;
 
+function toUTCDate(iso: string) {
+	// iso = 'YYYY-MM-DD'
+	const [y, m, d] = iso.split('-').map(Number);
+	return new Date(Date.UTC(y, m - 1, d));
+}
+
 export function todayISO(): string {
-	const d = new Date();
-	d.setHours(0, 0, 0, 0);
-	return d.toISOString().slice(0, 10);
+	const now = new Date();
+	now.setHours(0, 0, 0, 0);
+	return now.toISOString().slice(0, 10);
 }
 
 export function clampToPast90Days(inputISO: string): string {
-	const today = new Date(todayISO());
-	const date = new Date(inputISO);
+	if (!/^\d{4}-\d{2}-\d{2}$/.test(inputISO)) return todayISO();
+
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+
+	const date = new Date(inputISO + 'T00:00:00');
 	const min = new Date(today);
-	min.setDate(min.getDate() - DAYS_BACK_LIMIT);
-	if (date > today) return todayISO();
-	if (date < min) return min.toISOString().slice(0, 10);
+	min.setDate(today.getDate() - DAYS_BACK_LIMIT);
+
+	// If the date is in the future → clamp to today
+	if (date.getTime() > today.getTime()) return todayISO();
+
+	// If the date is older than 90 days → clamp to min date
+	if (date.getTime() < min.getTime()) return min.toISOString().slice(0, 10);
+
+	// Otherwise keep it
 	return inputISO;
 }
 
 export function last7DaysFrom(selectedISO: string): string[] {
-	const start = new Date(selectedISO);
-	start.setHours(0, 0, 0, 0);
+	const start = toUTCDate(selectedISO);
 	const out: string[] = [];
-	for (let i = 0; i < 7; i++) {
+	for (let i = 6; i >= 0; i--) {
 		const d = new Date(start);
-		d.setDate(start.getDate() - i);
+		d.setUTCDate(start.getUTCDate() - i);
 		out.push(d.toISOString().slice(0, 10));
 	}
-	return out.reverse();
+	return out;
 }

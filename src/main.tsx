@@ -6,7 +6,22 @@ import App from './App';
 import { store } from './app/store';
 
 const theme = createTheme({
-    palette: { mode: 'light' },
+    palette: {
+        mode: 'light',
+        primary: { main: '#1976d2' },
+        secondary: { main: '#009688' },
+        background: { default: '#fafafa' },
+    },
+    typography: {
+        fontFamily: 'Inter, Roboto, sans-serif',
+    },
+    shape: { borderRadius: 12 },
+    components: {
+        MuiPaper: {
+            defaultProps: { elevation: 0 },
+            styleOverrides: { root: { backgroundImage: 'none' } },
+        },
+    }
 });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

@@ -1,14 +1,11 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import {
 	Box,
 	Chip,
-	FormControl,
-	InputLabel,
-	MenuItem,
-	Select,
-	type SelectChangeEvent,
 	Stack,
 	Typography,
+	Autocomplete,
+	TextField,
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
@@ -25,26 +22,44 @@ export default function ComparedCurrenciesManager() {
 	const base = useAppSelector((s) => s.currencies.base);
 	const compared = useAppSelector((s) => s.currencies.compared);
 	const { data: list } = useGetCurrenciesListQuery();
-	const [candidate, setCandidate] = useState('');
 
 	const available = useMemo(() => {
 		if (!list) return [];
 		return Object.keys(list)
 			.filter((c) => c !== base && !compared.includes(c))
+			.map((c) => c.toUpperCase())
 			.sort();
 	}, [list, base, compared]);
 
-	const onAdd = (e: SelectChangeEvent<string>) => {
-		const v = e.target.value;
-		setCandidate(v);
-		if (v) dispatch(addCompared(v));
-	};
-
 	return (
 		<Stack spacing={1}>
+			<Typography
+				variant="subtitle2"
+				sx={{ mb: 0.5, color: 'text.secondary', fontWeight: 500 }}
+			>
+				Add currency
+			</Typography>
+
+			{/* Searchable Autocomplete input */}
+			<Autocomplete
+				size="small"
+				options={available}
+				disabled={compared.length >= MAX}
+				renderInput={(params) => (
+					<TextField {...params} placeholder="Search..." />
+				)}
+				onChange={(_, value) => {
+					if (value) dispatch(addCompared(value.toLowerCase()));
+				}}
+				blurOnSelect
+				clearOnEscape
+			/>
+
 			<Typography variant="subtitle2">
 				Compared currencies ({compared.length}/{MAX})
 			</Typography>
+
+			{/* Active currency chips */}
 			<Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
 				{compared.map((code) => (
 					<Chip
@@ -60,24 +75,6 @@ export default function ComparedCurrenciesManager() {
 					/>
 				))}
 			</Box>
-			<FormControl
-				size="small"
-				disabled={compared.length >= MAX || available.length === 0}
-			>
-				<InputLabel id="add-currency-label">Add currency</InputLabel>
-				<Select
-					labelId="add-currency-label"
-					value={candidate}
-					label="Add currency"
-					onChange={onAdd}
-				>
-					{available.map((c) => (
-						<MenuItem key={c} value={c}>
-							{c.toUpperCase()}
-						</MenuItem>
-					))}
-				</Select>
-			</FormControl>
 		</Stack>
 	);
 }
