@@ -18,8 +18,8 @@ export default function Home() {
 
 	return (
 		<Paper
-			elevation={1}
 			sx={{
+				bgcolor: 'background.paper',
 				borderRadius: 3,
 				overflow: 'hidden',
 				border: '1px solid #e0e0e0',
@@ -30,7 +30,6 @@ export default function Home() {
 				sx={{
 					px: 3,
 					py: 2,
-					bgcolor: 'grey.50',
 					display: 'flex',
 					flexDirection: 'column',
 					gap: 2,
@@ -39,7 +38,7 @@ export default function Home() {
 				{/* Top row: base + date */}
 				<Grid
 					container
-					alignItems="center"
+					alignItems="flex-start"
 					spacing={2}
 				>
 					<Grid size={{ xs: 12, md: 6 }}>

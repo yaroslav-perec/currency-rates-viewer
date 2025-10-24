@@ -17,6 +17,7 @@ export default function BaseCurrencySelect() {
 	return (
 		<Autocomplete
 			size="small"
+			color="secondary"
 			disableClearable
 			options={codes}
 			value={base.toUpperCase()}

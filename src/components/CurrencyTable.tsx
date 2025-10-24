@@ -103,7 +103,7 @@ export default function CurrencyTable({ selectedDate }: { selectedDate: string }
 			</Typography>
 
 			<TableContainer component={Paper}>
-				<Table size="small">
+				<Table size="small" stickyHeader sx={{ borderRadius: 2 }}>
 					<TableHead sx={{ bgcolor: 'grey.100' }}>
 						<TableRow>
 							<TableCell sortDirection={orderBy === 'date' ? order : false}>
@@ -140,7 +140,7 @@ export default function CurrencyTable({ selectedDate }: { selectedDate: string }
 									colSpan={compared.length + 1}
 									sx={{ py: 3, px: 2, bgcolor: 'background.paper' }}
 								>
-									<LinearProgress color="primary" variant="indeterminate" />
+									<LinearProgress color="primary" variant="indeterminate" sx={{ mx: 2, my: 2 }} />
 									<Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block', textAlign: 'center' }}>
 										Loading latest exchange rates...
 									</Typography>
@@ -157,15 +157,8 @@ export default function CurrencyTable({ selectedDate }: { selectedDate: string }
 						)}
 						{!loading &&
 							!error &&
-							sortedRows.map((row, idx) => (
-								<TableRow
-									key={row.date as string}
-									sx={{
-										bgcolor: idx % 2 === 0 ? 'grey.50' : 'background.paper',
-										transition: 'background-color 0.2s ease',
-										'&:hover': { bgcolor: 'grey.100' },
-									}}
-								>
+							sortedRows.map((row) => (
+								<TableRow key={row.date as string}>
 									<TableCell
 										sx={{
 											fontWeight: orderBy === 'date' ? 600 : 400,

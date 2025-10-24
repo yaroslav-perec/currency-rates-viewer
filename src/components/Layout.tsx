@@ -3,8 +3,8 @@ import { AppBar, Box, Container, Toolbar, Typography } from '@mui/material';
 
 export default function Layout({ children }: PropsWithChildren) {
 	return (
-		<Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
-			<AppBar position="static" color="primary" enableColorOnDark>
+		<Box sx={{ minHeight: '100vh' }}>
+			<AppBar position="static">
 				<Toolbar>
 					<Typography variant="h6" sx={{ fontWeight: 600 }}>
 						Currency Rates
