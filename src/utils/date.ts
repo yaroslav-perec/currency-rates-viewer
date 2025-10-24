@@ -43,3 +43,15 @@ export function last7DaysFrom(selectedISO: string): string[] {
 	}
 	return out;
 }
+
+export function latestAvailableApiDate(): string {
+	const now = new Date();
+	// Convert to UTC midnight
+	const utcDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+	// If we're before ~03:00 local (API still not updated for today), fallback to yesterday UTC
+	if (now.getUTCHours() < 2) {
+		utcDate.setUTCDate(utcDate.getUTCDate() - 1);
+	}
+	return utcDate.toISOString().slice(0, 10);
+}
+
