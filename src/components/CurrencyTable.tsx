@@ -11,64 +11,34 @@ import {
 	TableSortLabel,
 	Typography,
 } from '@mui/material';
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import { useAppSelector } from '../app/hooks';
-import { last7DaysFrom } from '../utils/date';
+import { useRatesForLast7Days } from '../hooks/useRatesForLast7Days';
 
 type Order = 'asc' | 'desc';
+
+export interface RateRow {
+	date: string;
+	[key: string]: string | number;
+}
 
 function formatRate(n?: number) {
 	if (n == null || Number.isNaN(n)) return '—';
 	return n.toFixed(4);
 }
 
-interface RateRow {
-	date: string;
-	[key: string]: number | string;
-}
-
 export default function CurrencyTable({ selectedDate }: { selectedDate: string }) {
 	const base = useAppSelector((s) => s.currencies.base);
 	const compared = useAppSelector((s) => s.currencies.compared);
-	const days = useMemo(() => last7DaysFrom(selectedDate), [selectedDate]);
 
-	const [rows, setRows] = useState<RateRow[]>([]);
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState<string | null>(null);
+	const { data: rows, loading, error } = useRatesForLast7Days(selectedDate, base) as {
+		data: RateRow[];
+		loading: boolean;
+		error: Error;
+	};
 
 	const [orderBy, setOrderBy] = useState<string>('date');
 	const [order, setOrder] = useState<Order>('desc');
-
-	useEffect(() => {
-		let isCancelled = false;
-
-		async function fetchRates() {
-			setLoading(true);
-			setError(null);
-
-			try {
-				const results = await Promise.all(
-					days.map(async (d) => {
-						const url = `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@${d}/v1/currencies/${base}.json`;
-						const res = await fetch(url);
-						if (!res.ok) throw new Error(`Failed for ${d}`);
-						const json = await res.json();
-						return { date: d, ...json[base] };
-					})
-				);
-				if (!isCancelled) setRows(results);
-			} catch {
-				if (!isCancelled) setError('Failed to load exchange rates');
-			} finally {
-				if (!isCancelled) setLoading(false);
-			}
-		}
-
-		fetchRates();
-		return () => {
-			isCancelled = true;
-		};
-	}, [base, days]);
 
 	/* ---------------- Sorting ---------------- */
 	const sortedRows = useMemo(() => {
@@ -110,7 +80,6 @@ export default function CurrencyTable({ selectedDate }: { selectedDate: string }
 					overflowX: 'auto',
 					overflowY: { xs: 'visible', sm: 'auto' },
 					borderRadius: 2,
-					overflow: 'auto',
 				}}
 			>
 				<Table size="small" stickyHeader sx={{ minWidth: 700 }}>
@@ -157,26 +126,8 @@ export default function CurrencyTable({ selectedDate }: { selectedDate: string }
 					<TableBody>
 						{loading && (
 							<TableRow>
-								<TableCell
-									colSpan={compared.length + 1}
-									sx={{ py: 3, px: 2, bgcolor: 'background.paper' }}
-								>
-									<LinearProgress
-										color="primary"
-										variant="indeterminate"
-										sx={{ mx: 2, my: 2 }}
-									/>
-									<Typography
-										variant="caption"
-										color="text.secondary"
-										sx={{
-											mt: 1,
-											display: 'block',
-											textAlign: 'center',
-										}}
-									>
-										Loading latest exchange rates...
-									</Typography>
+								<TableCell colSpan={compared.length + 1}>
+									<LinearProgress color="primary" sx={{ my: 2 }} />
 								</TableCell>
 							</TableRow>
 						)}
@@ -184,7 +135,7 @@ export default function CurrencyTable({ selectedDate }: { selectedDate: string }
 						{error && (
 							<TableRow>
 								<TableCell colSpan={compared.length + 1}>
-									<Alert severity="error">{error}</Alert>
+									<Alert severity="error">Failed to load exchange rates</Alert>
 								</TableCell>
 							</TableRow>
 						)}
@@ -192,8 +143,7 @@ export default function CurrencyTable({ selectedDate }: { selectedDate: string }
 						{!loading &&
 							!error &&
 							sortedRows.map((row) => (
-								<TableRow key={row.date as string}>
-									{/* Sticky date column */}
+								<TableRow key={row.date}>
 									<TableCell
 										sx={{
 											position: 'sticky',
