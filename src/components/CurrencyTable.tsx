@@ -51,6 +51,7 @@ export default function CurrencyTable({ selectedDate }: { selectedDate: string }
 					days.map(async (d) => {
 						const url = `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@${d}/v1/currencies/${base}.json`;
 						const res = await fetch(url);
+						if (!res.ok) throw new Error(`Failed for ${d}`);
 						const json = await res.json();
 						return { date: d, ...json[base] };
 					})
@@ -102,11 +103,27 @@ export default function CurrencyTable({ selectedDate }: { selectedDate: string }
 				{compared.map((c) => c.toUpperCase()).join(', ')}
 			</Typography>
 
-			<TableContainer component={Paper}>
-				<Table size="small" stickyHeader sx={{ borderRadius: 2 }}>
+			<TableContainer
+				component={Paper}
+				sx={{
+					maxHeight: 400,
+					overflow: 'auto',
+					borderRadius: 2,
+				}}
+			>
+				<Table size="small" stickyHeader sx={{ minWidth: 700 }}>
+					{/* ---------- HEADER ---------- */}
 					<TableHead sx={{ bgcolor: 'grey.100' }}>
 						<TableRow>
-							<TableCell sortDirection={orderBy === 'date' ? order : false}>
+							<TableCell
+								sx={{
+									position: 'sticky',
+									left: 0,
+									zIndex: 3,
+									backgroundColor: 'grey.100',
+								}}
+								sortDirection={orderBy === 'date' ? order : false}
+							>
 								<TableSortLabel
 									active={orderBy === 'date'}
 									direction={orderBy === 'date' ? order : 'asc'}
@@ -115,6 +132,7 @@ export default function CurrencyTable({ selectedDate }: { selectedDate: string }
 									Date
 								</TableSortLabel>
 							</TableCell>
+
 							{compared.map((c) => (
 								<TableCell
 									key={c}
@@ -133,6 +151,7 @@ export default function CurrencyTable({ selectedDate }: { selectedDate: string }
 						</TableRow>
 					</TableHead>
 
+					{/* ---------- BODY ---------- */}
 					<TableBody>
 						{loading && (
 							<TableRow>
@@ -140,8 +159,20 @@ export default function CurrencyTable({ selectedDate }: { selectedDate: string }
 									colSpan={compared.length + 1}
 									sx={{ py: 3, px: 2, bgcolor: 'background.paper' }}
 								>
-									<LinearProgress color="primary" variant="indeterminate" sx={{ mx: 2, my: 2 }} />
-									<Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block', textAlign: 'center' }}>
+									<LinearProgress
+										color="primary"
+										variant="indeterminate"
+										sx={{ mx: 2, my: 2 }}
+									/>
+									<Typography
+										variant="caption"
+										color="text.secondary"
+										sx={{
+											mt: 1,
+											display: 'block',
+											textAlign: 'center',
+										}}
+									>
 										Loading latest exchange rates...
 									</Typography>
 								</TableCell>
@@ -155,18 +186,25 @@ export default function CurrencyTable({ selectedDate }: { selectedDate: string }
 								</TableCell>
 							</TableRow>
 						)}
+
 						{!loading &&
 							!error &&
 							sortedRows.map((row) => (
 								<TableRow key={row.date as string}>
+									{/* Sticky date column */}
 									<TableCell
 										sx={{
+											position: 'sticky',
+											left: 0,
+											zIndex: 2,
+											backgroundColor: 'background.paper',
 											fontWeight: orderBy === 'date' ? 600 : 400,
 											color: orderBy === 'date' ? 'primary.main' : 'inherit',
 										}}
 									>
 										{row.date}
 									</TableCell>
+
 									{compared.map((c) => (
 										<TableCell
 											key={c}
