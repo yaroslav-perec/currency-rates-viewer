@@ -1,13 +1,13 @@
 import { Box, Chip, Stack, Typography } from '@mui/material';
 
-interface ComparedCurrenciesListProps {
+interface Props {
 	compared: string[];
 	min: number;
 	max: number;
 	onDelete?: (code: string) => void;
 }
 
-export function ComparedCurrenciesList({ compared, min, max, onDelete }: ComparedCurrenciesListProps) {
+export function ComparedCurrenciesList({ compared, min, max, onDelete }: Props) {
 	const canDelete = compared.length > min;
 
 	const handleDelete = (code: string) => {

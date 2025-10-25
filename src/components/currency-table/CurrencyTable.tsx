@@ -7,7 +7,11 @@ import { CurrencyTableBody } from './CurrencyTableBody';
 import { CurrencyTableStateBanner } from './CurrencyTableStateBanner';
 import type { TableRateRow } from './types';
 
-export function CurrencyTable({ selectedDate }: { selectedDate: string }) {
+interface Props {
+	selectedDate: string;
+}
+
+export function CurrencyTable({ selectedDate }: Props) {
 	const base = useAppSelector((s) => s.currencies.base);
 	const compared = useAppSelector((s) => s.currencies.compared);
 
