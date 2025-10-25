@@ -33,7 +33,9 @@ export function CurrencyTable({ selectedDate }: Props) {
 					maxHeight: { xs: 'none', sm: 400 },
 					borderRadius: 2,
 					position: 'relative',
-					overflow: 'hidden',
+					overflowX: 'auto',
+					overflowY: 'hidden',
+					WebkitOverflowScrolling: 'touch',
 				}}
 			>
 				<Table size="small" stickyHeader={showData} sx={{ minWidth: 700 }}>
