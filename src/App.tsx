@@ -1,10 +1,10 @@
-import Layout from 'shared/components/Layout.tsx';
-import Home from './modules/currencies/CurrencyRatesPage';
+import { Layout } from 'src/shared/components/Layout';
+import CurrencyRatesPage from './modules/currencies/CurrencyRatesPage';
 
 export default function App() {
     return (
         <Layout>
-            <Home />
+            <CurrencyRatesPage />
         </Layout>
     );
 }

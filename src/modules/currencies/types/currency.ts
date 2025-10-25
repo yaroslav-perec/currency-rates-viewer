@@ -1,11 +1,14 @@
 export type CurrencyCode = string;
 
 export interface CurrenciesResponse {
-	[code: string]: string;
+	[code: CurrencyCode]: string;
+}
+
+interface CurrencyRates {
+	[key: CurrencyCode]: number;
 }
 
 export interface RatesResponse {
 	date: string;
-	[key: string]: unknown;
+	[key: CurrencyCode]: CurrencyRates | string;
 }
-

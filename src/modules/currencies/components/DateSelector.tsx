@@ -3,14 +3,14 @@ import { Stack, Tooltip, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { clampToPast90Days, DAYS_BACK_LIMIT, latestAvailableApiDate } from 'shared/utils/date';
+import { clampToPast90Days, DAYS_BACK_LIMIT, latestAvailableApiDate } from 'src/shared/utils/date';
 
 interface Props {
 	value: string;
 	onChange: (s: string) => void;
 }
 
-export default function DateSelector({ value, onChange }: Props) {
+export function DateSelector({ value, onChange }: Props) {
 	const id = useId();
 	const latestApiDateStr = latestAvailableApiDate();
 	const latestApiDate = new Date(`${latestApiDateStr}T00:00:00`);

@@ -1,6 +1,6 @@
 import { Paper, Divider, Box, Typography } from '@mui/material';
 import { useState } from 'react';
-import { todayISO } from 'shared/utils/date';
+import { todayISO } from 'src/shared/utils/date';
 import { ToolbarPanel } from './components/ToolbarPanel';
 import { CurrencyTable } from './components/currency-table/CurrencyTable';
 

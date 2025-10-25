@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Stack, Typography, Autocomplete, TextField } from '@mui/material';
-import { useAppDispatch } from 'redux/hooks';
+import { useAppDispatch } from 'src/redux/hooks';
 import { addCompared, removeCompared } from '../../currenciesSlice';
 import {
 	MAX_COMPARED_CURRENCIES,
@@ -9,7 +9,7 @@ import {
 import { useComparedCurrencies } from './useComparedCurrencies.ts';
 import { ComparedCurrenciesList } from './ComparedCurrenciesList.tsx';
 
-export default function ComparedCurrenciesManager() {
+export function ComparedCurrenciesManager() {
 	const dispatch = useAppDispatch();
 	const { compared, available } = useComparedCurrencies();
 	const [value, setValue] = useState<string | null>(null);

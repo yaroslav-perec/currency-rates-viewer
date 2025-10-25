@@ -1,9 +1,9 @@
 import { Autocomplete, TextField, autocompleteClasses } from '@mui/material';
-import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { setBase } from '../currenciesSlice';
 import { useCurrencyCodes } from '../hooks/useCurrencyCodes';
 
-export default function BaseCurrencySelect() {
+export function BaseCurrencySelect() {
 	const dispatch = useAppDispatch();
 	const base = useAppSelector((s) => s.currencies.base);
 	const { codes, isLoading } = useCurrencyCodes();

@@ -1,7 +1,7 @@
 import { Grid, Box, Typography } from '@mui/material';
-import BaseCurrencySelect from './BaseCurrencySelect';
-import DateSelector from './DateSelector';
-import ComparedCurrenciesManager from './compared-currencies-manager/ComparedCurrenciesManager';
+import { BaseCurrencySelect } from './BaseCurrencySelect';
+import { DateSelector } from './DateSelector';
+import { ComparedCurrenciesManager } from './compared-currencies-manager/ComparedCurrenciesManager';
 
 interface Props {
 	date: string;

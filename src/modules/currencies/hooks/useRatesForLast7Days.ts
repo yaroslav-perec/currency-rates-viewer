@@ -1,4 +1,4 @@
-import { last7DaysFrom } from 'shared/utils/date';
+import { last7DaysFrom } from 'src/shared/utils/date';
 import { useGetRatesByDateAndBaseQuery } from '../api/currencyApi';
 
 export function useRatesForLast7Days(selectedDate: string, base: string) {

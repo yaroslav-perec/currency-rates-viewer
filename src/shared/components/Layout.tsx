@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from 'react';
 import { AppBar, Box, Container, Toolbar, Typography } from '@mui/material';
 
-export default function Layout({ children }: PropsWithChildren) {
+export function Layout({ children }: PropsWithChildren) {
 	return (
 		<Box sx={{ minHeight: '100vh' }}>
 			<AppBar position="static">

@@ -1,5 +1,5 @@
 import { Box, Paper, Table, TableContainer } from '@mui/material';
-import { useAppSelector } from 'redux/hooks';
+import { useAppSelector } from 'src/redux/hooks';
 import { useRatesForLast7Days } from '../../hooks/useRatesForLast7Days';
 import { useTableSort } from './useTableSort';
 import { CurrencyTableHeader } from './CurrencyTableHeader';
