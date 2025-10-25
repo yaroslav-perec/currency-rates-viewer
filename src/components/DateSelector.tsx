@@ -41,21 +41,7 @@ export default function DateSelector({ value, onChange }: Props) {
 						maxDate={latestApiDate}
 						minDate={minDate}
 						slotProps={{
-							textField: {
-								id,
-								fullWidth: true,
-								size: 'small',
-								sx: {
-									'& .MuiOutlinedInput-root': {
-										backgroundColor: '#fff',
-										borderRadius: 1,
-										'& fieldset': { borderColor: '#ccc' },
-										'&:hover fieldset': { borderColor: '#999' },
-										'&.Mui-focused fieldset': { borderColor: '#000' },
-									},
-									'& input': { color: '#111', fontWeight: 500 },
-								},
-							},
+							textField: { id, fullWidth: true, size: 'small' },
 						}}
 					/>
 				</LocalizationProvider>

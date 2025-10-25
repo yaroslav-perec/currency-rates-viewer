@@ -19,7 +19,7 @@ export function ComparedCurrenciesList({ compared, min, max, onDelete }: Props) 
 	return (
 		<Box sx={{ borderTop: '1px solid #eee', mt: 1.5, pt: 1.5 }}>
 			<Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
-				<Typography variant="subtitle2" sx={{ color: 'text.secondary', fontWeight: 600 }}>
+				<Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
 					Compared currencies
 				</Typography>
 

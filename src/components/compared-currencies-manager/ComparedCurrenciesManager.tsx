@@ -21,10 +21,7 @@ export default function ComparedCurrenciesManager() {
 
 	return (
 		<Stack spacing={1}>
-			<Typography
-				variant="subtitle2"
-				sx={{ mb: 0.5, color: 'text.secondary', fontWeight: 500 }}
-			>
+			<Typography variant="subtitle2" sx={{ mb: 0.5 }}>
 				Add currency
 			</Typography>
 
