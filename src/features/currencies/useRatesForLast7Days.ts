@@ -1,4 +1,3 @@
-// src/hooks/useRatesForLast7Days.ts
 import { useGetRatesByDateAndBaseQuery } from '../../api/currencyApi.ts';
 import { last7DaysFrom } from '../../utils/date';
 

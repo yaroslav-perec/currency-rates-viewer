@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import BaseCurrencySelect from '../components/BaseCurrencySelect';
-import ComparedCurrenciesManager from '../components/ComparedCurrenciesManager';
+import ComparedCurrenciesManager from '../components/compared-currencies-manager/ComparedCurrenciesManager';
 import DateSelector from '../components/DateSelector';
 import CurrencyTable from '../components/CurrencyTable';
 import { todayISO } from '../utils/date';

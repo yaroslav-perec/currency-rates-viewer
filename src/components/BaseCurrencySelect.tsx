@@ -1,30 +1,61 @@
-import { useMemo } from 'react';
-import { Autocomplete, TextField } from '@mui/material';
+import {
+	Autocomplete,
+	CircularProgress,
+	TextField,
+	autocompleteClasses,
+} from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { setBase } from '../features/currencies/currenciesSlice';
-import { useGetCurrenciesListQuery } from '../api/currencyApi';
+import { useCurrencyCodes } from '../features/currencies/useCurrencyCodes';
 
 export default function BaseCurrencySelect() {
 	const dispatch = useAppDispatch();
 	const base = useAppSelector((s) => s.currencies.base);
-	const { data: list } = useGetCurrenciesListQuery();
+	const { codes, isLoading } = useCurrencyCodes();
 
-	const codes = useMemo(() => {
-		if (!list) return [];
-		return Object.keys(list).map((c) => c.toUpperCase()).sort();
-	}, [list]);
+	const selectedValue = codes.includes(base.toUpperCase())
+		? base.toUpperCase()
+		: '';
+
+	const handleChange = (_: unknown, value: string | null) => {
+		if (value) dispatch(setBase(value.toLowerCase()));
+	};
 
 	return (
 		<Autocomplete
 			size="small"
-			color="secondary"
 			disableClearable
 			options={codes}
-			value={base.toUpperCase()}
-			onChange={(_, value) => dispatch(setBase(value.toLowerCase()))}
+			value={selectedValue}
+			onChange={handleChange}
+			loading={isLoading}
+			loadingText="Loading currencies..."
 			renderInput={(params) => (
-				<TextField {...params} placeholder="Search..." />
+				<TextField
+					{...params}
+					placeholder="Select base currency"
+					slotProps={{
+						input: {
+							endAdornment: (
+								<>
+									{isLoading && (
+										<CircularProgress color="inherit" size={16} sx={{ mr: 1 }} />
+									)}
+									{params?.InputProps?.endAdornment}
+								</>
+							),
+						},
+					}}
+				/>
 			)}
+			sx={{
+				minWidth: 180,
+				borderRadius: 1,
+				[`& .${autocompleteClasses.input}`]: {
+					fontWeight: 500,
+					color: 'text.primary',
+				},
+			}}
 		/>
 	);
 }
