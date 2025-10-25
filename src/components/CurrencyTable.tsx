@@ -1,3 +1,4 @@
+import { Fragment, useMemo, useState } from 'react';
 import {
 	Alert,
 	LinearProgress,
@@ -11,13 +12,12 @@ import {
 	TableSortLabel,
 	Typography,
 } from '@mui/material';
-import { Fragment, useMemo, useState } from 'react';
 import { useAppSelector } from '../app/hooks';
-import { useRatesForLast7Days } from '../hooks/useRatesForLast7Days';
+import { useRatesForLast7Days } from '../features/currencies/useRatesForLast7Days';
 
 type Order = 'asc' | 'desc';
 
-export interface RateRow {
+interface RateRow {
 	date: string;
 	[key: string]: string | number;
 }

@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { setBase } from '../features/currencies/currenciesSlice';
-import { useGetCurrenciesListQuery } from '../services/currencyApi';
+import { useGetCurrenciesListQuery } from '../api/currencyApi';
 
 export default function BaseCurrencySelect() {
 	const dispatch = useAppDispatch();

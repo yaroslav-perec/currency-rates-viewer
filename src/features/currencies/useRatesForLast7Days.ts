@@ -1,6 +1,6 @@
 // src/hooks/useRatesForLast7Days.ts
-import { useGetRatesByDateAndBaseQuery } from '../services/currencyApi';
-import { last7DaysFrom } from '../utils/date';
+import { useGetRatesByDateAndBaseQuery } from '../../api/currencyApi.ts';
+import { last7DaysFrom } from '../../utils/date';
 
 export function useRatesForLast7Days(selectedDate: string, base: string) {
 	const days = last7DaysFrom(selectedDate);

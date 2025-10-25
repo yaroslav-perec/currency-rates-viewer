@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { CurrencyCode } from '../../services/currencyApi';
+import type { CurrencyCode } from '../../types/currency.ts';
 
 export interface CurrencyState {
 	base: CurrencyCode;

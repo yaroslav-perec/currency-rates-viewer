@@ -12,7 +12,7 @@ import {
 	addCompared,
 	removeCompared,
 } from '../features/currencies/currenciesSlice';
-import { useGetCurrenciesListQuery } from '../services/currencyApi';
+import { useGetCurrenciesListQuery } from '../api/currencyApi';
 
 const MIN = 3;
 const MAX = 7;
