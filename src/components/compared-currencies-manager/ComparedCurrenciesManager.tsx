@@ -1,18 +1,30 @@
+import { useState } from 'react';
 import { Stack, Typography, Autocomplete, TextField } from '@mui/material';
 import { addCompared, removeCompared } from '../../features/currencies/currenciesSlice';
 import { useAppDispatch } from '../../app/hooks.ts';
-import { MAX_COMPARED_CURRENCIES, MIN_COMPARED_CURRENCIES } from '../../features/currencies/constants';
+import {
+	MAX_COMPARED_CURRENCIES,
+	MIN_COMPARED_CURRENCIES,
+} from '../../features/currencies/constants';
 import { useComparedCurrencies } from './useComparedCurrencies';
 import { ComparedCurrenciesList } from './ComparedCurrenciesList';
 
 export default function ComparedCurrenciesManager() {
 	const dispatch = useAppDispatch();
 	const { compared, available } = useComparedCurrencies();
+	const [value, setValue] = useState<string | null>(null);
+	const [inputValue, setInputValue] = useState('');
 
-	const handleAddCurrency = (_: unknown, value: string | null) => {
-		if (value) {
-			dispatch(addCompared(value.toLowerCase()));
+	const handleAddCurrency = (_: unknown, newValue: string | null) => {
+		if (newValue) {
+			dispatch(addCompared(newValue.toLowerCase()));
+			setValue(null);
+			setInputValue('');
 		}
+	};
+
+	const handleInputChange = (_: unknown, newInput: string) => {
+		setInputValue(newInput);
 	};
 
 	const handleDelete = (code: string) => {
@@ -28,13 +40,16 @@ export default function ComparedCurrenciesManager() {
 			<Autocomplete
 				size="small"
 				options={available}
+				value={value}
+				inputValue={inputValue}
+				onChange={handleAddCurrency}
+				onInputChange={handleInputChange}
 				disabled={compared.length >= MAX_COMPARED_CURRENCIES}
+				blurOnSelect
+				clearOnEscape
 				renderInput={(params) => (
 					<TextField {...params} placeholder="Search..." />
 				)}
-				onChange={handleAddCurrency}
-				blurOnSelect
-				clearOnEscape
 			/>
 
 			<ComparedCurrenciesList

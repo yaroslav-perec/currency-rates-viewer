@@ -87,10 +87,22 @@ export const theme = createTheme({
 					'& fieldset': { borderColor: '#ccc' },
 					'&:hover fieldset': { borderColor: '#999' },
 					'&.Mui-focused fieldset': { borderColor: '#000' },
+					'&.Mui-disabled': {
+						backgroundColor: '#f5f5f5',
+						color: '#999',
+						cursor: 'not-allowed',
+						'& fieldset': {
+							borderColor: '#ddd',
+						},
+					},
 				},
 				input: {
 					color: '#111',
 					'&::placeholder': { color: '#777' },
+					'&.Mui-disabled': {
+						color: '#999',
+						WebkitTextFillColor: '#999', // fixes Safari gray color issue
+					},
 				},
 			},
 		},
