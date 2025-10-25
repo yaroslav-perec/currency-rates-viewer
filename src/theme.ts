@@ -4,8 +4,8 @@ import { createTheme } from '@mui/material/styles';
 export const theme = createTheme({
 	palette: {
 		mode: 'light',
-		primary: { main: '#000000' }, // black accents
-		secondary: { main: '#424242' }, // deep gray for labels/icons
+		primary: { main: '#000000' },
+		secondary: { main: '#424242' },
 		background: { default: '#f9f9f9', paper: '#ffffff' },
 		text: { primary: '#111111', secondary: '#555555' },
 		divider: '#e0e0e0',
@@ -15,6 +15,13 @@ export const theme = createTheme({
 		fontWeightRegular: 400,
 		fontWeightMedium: 500,
 		fontWeightBold: 600,
+		subtitle2: {
+			color: '#555',
+			fontWeight: 500,
+			fontSize: '0.85rem',
+			lineHeight: 1.4,
+			letterSpacing: 0,
+		},
 	},
 	shape: { borderRadius: 10 },
 	components: {
@@ -52,9 +59,7 @@ export const theme = createTheme({
 
 		/* ---------- Buttons, Chips, Inputs ---------- */
 		MuiButtonBase: {
-			defaultProps: {
-				disableRipple: true,
-			},
+			defaultProps: { disableRipple: true },
 		},
 
 		MuiChip: {
@@ -65,9 +70,7 @@ export const theme = createTheme({
 					backgroundColor: '#f7f7f7',
 					color: '#111',
 					border: '1px solid #ddd',
-					'&:hover': {
-						backgroundColor: '#efefef',
-					},
+					'&:hover': { backgroundColor: '#efefef' },
 				},
 				deleteIcon: {
 					color: '#666',
@@ -81,15 +84,9 @@ export const theme = createTheme({
 				root: {
 					backgroundColor: '#fff',
 					color: '#111',
-					'& fieldset': {
-						borderColor: '#ccc',
-					},
-					'&:hover fieldset': {
-						borderColor: '#999',
-					},
-					'&.Mui-focused fieldset': {
-						borderColor: '#000',
-					},
+					'& fieldset': { borderColor: '#ccc' },
+					'&:hover fieldset': { borderColor: '#999' },
+					'&.Mui-focused fieldset': { borderColor: '#000' },
 				},
 				input: {
 					color: '#111',
@@ -132,21 +129,14 @@ export const theme = createTheme({
 			},
 		},
 
-		/* ---------- Sort Label ---------- */
 		MuiTableSortLabel: {
 			styleOverrides: {
 				root: {
 					color: 'inherit',
-					'&.Mui-active': {
-						color: '#000',
-						fontWeight: 600,
-					},
+					'&.Mui-active': { color: '#000', fontWeight: 600 },
 				},
-				icon: {
-					color: '#000 !important',
-				},
+				icon: { color: '#000 !important' },
 			},
 		},
-
 	},
 });
