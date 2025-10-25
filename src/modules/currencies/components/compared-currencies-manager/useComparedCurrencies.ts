@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useAppSelector } from 'shared/hooks/hooks';
+import { useAppSelector } from 'redux/hooks';
 import { useGetCurrenciesListQuery } from '../../api/currencyApi';
 
 export function useComparedCurrencies() {

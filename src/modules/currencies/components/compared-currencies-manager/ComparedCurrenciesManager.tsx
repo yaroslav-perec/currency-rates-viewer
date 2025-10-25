@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Stack, Typography, Autocomplete, TextField } from '@mui/material';
-import { useAppDispatch } from 'shared/hooks/hooks';
+import { useAppDispatch } from 'redux/hooks';
 import { addCompared, removeCompared } from '../../currenciesSlice';
 import {
 	MAX_COMPARED_CURRENCIES,

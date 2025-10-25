@@ -1,5 +1,5 @@
 import { Autocomplete, TextField, autocompleteClasses } from '@mui/material';
-import { useAppDispatch, useAppSelector } from 'shared/hooks/hooks';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { setBase } from '../currenciesSlice';
 import { useCurrencyCodes } from '../hooks/useCurrencyCodes';
 
