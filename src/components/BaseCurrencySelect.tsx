@@ -1,9 +1,4 @@
-import {
-	Autocomplete,
-	CircularProgress,
-	TextField,
-	autocompleteClasses,
-} from '@mui/material';
+import { Autocomplete, TextField, autocompleteClasses } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { setBase } from '../features/currencies/currenciesSlice';
 import { useCurrencyCodes } from '../features/currencies/useCurrencyCodes';
@@ -34,18 +29,6 @@ export default function BaseCurrencySelect() {
 				<TextField
 					{...params}
 					placeholder="Select base currency"
-					slotProps={{
-						input: {
-							endAdornment: (
-								<>
-									{isLoading && (
-										<CircularProgress color="inherit" size={16} sx={{ mr: 1 }} />
-									)}
-									{params?.InputProps?.endAdornment}
-								</>
-							),
-						},
-					}}
 				/>
 			)}
 			sx={{
