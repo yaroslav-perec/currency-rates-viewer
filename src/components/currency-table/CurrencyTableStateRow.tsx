@@ -1,15 +1,26 @@
-import { Alert, LinearProgress, TableCell, TableRow } from '@mui/material';
+import { Alert, LinearProgress, TableCell, TableRow, Typography, Box } from '@mui/material';
 
-export function CurrencyTableStateRow({ loading, error, colSpan, }: {
+interface Props {
 	loading: boolean;
-	error: Error;
+	error?: Error | null;
 	colSpan: number;
-}) {
+}
+
+export function CurrencyTableStateRow({ loading, error, colSpan }: Props) {
 	if (loading)
 		return (
 			<TableRow>
-				<TableCell colSpan={colSpan}>
-					<LinearProgress color="primary" sx={{ my: 2 }} />
+				<TableCell colSpan={colSpan} sx={{ py: 3, textAlign: 'center' }}>
+					<Box sx={{ px: 2 }}>
+						<LinearProgress
+							color="primary"
+							variant="indeterminate"
+							sx={{ mb: 1 }}
+						/>
+						<Typography variant="caption" color="text.secondary">
+							Loading latest exchange rates…
+						</Typography>
+					</Box>
 				</TableCell>
 			</TableRow>
 		);
