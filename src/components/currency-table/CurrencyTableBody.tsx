@@ -1,5 +1,4 @@
 import { TableBody, TableCell, TableRow } from '@mui/material';
-import { CurrencyTableStateRow } from './CurrencyTableStateRow';
 import type { TableRateRow } from './types';
 
 function formatRate(n?: number) {
@@ -11,17 +10,12 @@ interface Props {
 	compared: string[];
 	sortedRows: TableRateRow[];
 	orderBy: string;
-	loading: boolean;
-	error: Error;
 }
 
-export function CurrencyTableBody({ compared, sortedRows, orderBy, loading, error }: Props) {
+export function CurrencyTableBody({ compared, sortedRows, orderBy }: Props) {
 	return (
 		<TableBody>
-			<CurrencyTableStateRow loading={loading} error={error} colSpan={compared.length + 1} />
-
-			{!loading &&
-				!error &&
+			{
 				sortedRows.map((row) => (
 					<TableRow key={row.date}>
 						<TableCell
@@ -50,7 +44,8 @@ export function CurrencyTableBody({ compared, sortedRows, orderBy, loading, erro
 							</TableCell>
 						))}
 					</TableRow>
-				))}
+				))
+			}
 		</TableBody>
 	);
 }
