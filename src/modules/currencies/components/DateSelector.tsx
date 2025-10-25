@@ -1,13 +1,9 @@
+import { useId } from 'react';
 import { Stack, Tooltip, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { useId } from 'react';
-import {
-	clampToPast90Days,
-	DAYS_BACK_LIMIT,
-	latestAvailableApiDate,
-} from '../utils/date';
+import { clampToPast90Days, DAYS_BACK_LIMIT, latestAvailableApiDate } from 'shared/utils/date';
 
 interface Props {
 	value: string;

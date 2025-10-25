@@ -5,8 +5,8 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
+import { store } from 'shared/store';
 import App from './App';
-import { store } from './app/store';
 import { theme } from './theme';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

@@ -1,4 +1,3 @@
-
 export type CurrencyCode = string;
 
 export interface CurrenciesResponse {

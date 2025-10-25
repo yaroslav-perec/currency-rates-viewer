@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Stack, Typography, Autocomplete, TextField } from '@mui/material';
-import { addCompared, removeCompared } from '../../features/currencies/currenciesSlice';
-import { useAppDispatch } from '../../app/hooks.ts';
+import { useAppDispatch } from 'shared/hooks/hooks';
+import { addCompared, removeCompared } from '../../currenciesSlice';
 import {
 	MAX_COMPARED_CURRENCIES,
 	MIN_COMPARED_CURRENCIES,
-} from '../../features/currencies/constants';
-import { useComparedCurrencies } from './useComparedCurrencies';
-import { ComparedCurrenciesList } from './ComparedCurrenciesList';
+} from '../../constants';
+import { useComparedCurrencies } from './useComparedCurrencies.ts';
+import { ComparedCurrenciesList } from './ComparedCurrenciesList.tsx';
 
 export default function ComparedCurrenciesManager() {
 	const dispatch = useAppDispatch();

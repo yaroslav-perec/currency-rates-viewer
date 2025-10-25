@@ -1,7 +1,7 @@
 import { Autocomplete, TextField, autocompleteClasses } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { setBase } from '../features/currencies/currenciesSlice';
-import { useCurrencyCodes } from '../features/currencies/useCurrencyCodes';
+import { useAppDispatch, useAppSelector } from 'shared/hooks/hooks';
+import { setBase } from '../currenciesSlice';
+import { useCurrencyCodes } from '../hooks/useCurrencyCodes';
 
 export default function BaseCurrencySelect() {
 	const dispatch = useAppDispatch();

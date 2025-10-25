@@ -1,6 +1,6 @@
 import { Box, Paper, Table, TableContainer } from '@mui/material';
-import { useAppSelector } from '../../app/hooks';
-import { useRatesForLast7Days } from '../../features/currencies/useRatesForLast7Days';
+import { useAppSelector } from 'shared/hooks/hooks';
+import { useRatesForLast7Days } from '../../hooks/useRatesForLast7Days';
 import { useTableSort } from './useTableSort';
 import { CurrencyTableHeader } from './CurrencyTableHeader';
 import { CurrencyTableBody } from './CurrencyTableBody';

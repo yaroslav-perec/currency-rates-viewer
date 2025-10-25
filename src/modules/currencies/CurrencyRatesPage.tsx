@@ -1,10 +1,10 @@
 import { Paper, Divider, Box, Typography } from '@mui/material';
 import { useState } from 'react';
-import { ToolbarPanel } from '../components/ToolbarPanel';
-import { CurrencyTable } from '../components/currency-table/CurrencyTable';
-import { todayISO } from '../utils/date';
+import { todayISO } from 'shared/utils/date';
+import { ToolbarPanel } from './components/ToolbarPanel';
+import { CurrencyTable } from './components/currency-table/CurrencyTable';
 
-export default function Home() {
+export default function CurrencyRatesPage() {
 	const [date, setDate] = useState(todayISO());
 
 	return (

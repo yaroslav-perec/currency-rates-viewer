@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useGetCurrenciesListQuery } from '../../api/currencyApi.ts';
+import { useGetCurrenciesListQuery } from '../api/currencyApi';
 
 export function useCurrencyCodes() {
 	const { data: list, isLoading, isError, error } = useGetCurrenciesListQuery();

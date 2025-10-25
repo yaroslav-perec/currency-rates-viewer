@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { todayISO, clampToPast90Days } from '../date';
+import { todayISO, clampToPast90Days } from 'shared/utils/date';
 
 describe('clampToPast90Days (UTC-safe)', () => {
 	it('clamps future to today', () => {
