@@ -1,26 +1,29 @@
 {
   "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    /* ---------- Node / Tooling ---------- */
     "target": "ES2023",
     "lib": ["ES2023"],
     "module": "ESNext",
-    "types": ["node"],
+    "types": ["node", "vitest"],
+
     "skipLibCheck": true,
 
-    /* Bundler mode */
+    /* ---------- Bundler Mode ---------- */
     "moduleResolution": "bundler",
+    "moduleDetection": "force",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
-    "moduleDetection": "force",
     "noEmit": true,
 
-    /* Linting */
+    /* ---------- Strictness ---------- */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+
+    /* ---------- Compatibility ---------- */
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
-  "include": ["vite.config.ts"]
+  "include": ["vitest.config.ts"]
 }
