@@ -11,9 +11,6 @@
 
     /* ---------- Paths ---------- */
     "baseUrl": "./",
-    "paths": {
-      "src/*": ["src/*"]
-    },
     "types": ["vite/client", "vitest"],
 
     /* ---------- Output & Caching ---------- */
@@ -31,5 +28,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "vitest.config.ts", "vitest.setup.ts"]
+  "include": ["src", "vite.config.ts", "vitest.setup.ts"]
 }
