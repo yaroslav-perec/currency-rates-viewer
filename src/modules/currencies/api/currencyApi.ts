@@ -6,7 +6,7 @@ const CURRENCIES_LIST_URL = `${BASE_API_URL}latest/v1/currencies.json`;
 
 export const currencyApi = createApi({
 	reducerPath: 'currencyApi',
-	baseQuery: fetchBaseQuery(), // ⚠️ no baseUrl — we’ll use full URLs
+	baseQuery: fetchBaseQuery(), // no baseUrl — we’ll use full URLs
 	endpoints: (builder) => ({
 		getCurrenciesList: builder.query<CurrenciesResponse, void>({
 			queryFn: async () => {
