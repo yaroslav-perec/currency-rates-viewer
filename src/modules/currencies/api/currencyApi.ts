@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { CurrenciesResponse, RatesRequestParams, RatesResponse } from '../types/currency';
 
-const BASE_API_URL = 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@';
+export const BASE_API_URL = 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@';
 const CURRENCIES_LIST_URL = `${BASE_API_URL}latest/v1/currencies.json`;
 
 export const currencyApi = createApi({
