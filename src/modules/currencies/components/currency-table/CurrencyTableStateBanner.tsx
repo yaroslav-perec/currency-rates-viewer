@@ -1,8 +1,9 @@
 import { Alert, Box, LinearProgress, Typography } from '@mui/material';
+import type { ApiError } from 'src/shared/types/api';
 
 interface Props {
   loading: boolean;
-  error?: Error | null;
+  error?: ApiError;
 }
 
 export function CurrencyTableStateBanner({ loading, error }: Props) {

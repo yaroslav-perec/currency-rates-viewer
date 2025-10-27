@@ -1,10 +1,7 @@
 import { useMemo, useState } from 'react';
-import type { Order } from './types';
+import type { Order, TableRateRow } from './types';
 
-export function useTableSort<T extends Record<string, string | number>>(
-  rows: T[],
-  defaultKey = 'date',
-) {
+export function useTableSort(rows: TableRateRow[], defaultKey = 'date') {
   const [orderBy, setOrderBy] = useState<string>(defaultKey);
   const [order, setOrder] = useState<Order>('desc');
 
@@ -20,22 +17,22 @@ export function useTableSort<T extends Record<string, string | number>>(
     setOrderBy(key);
   };
 
-  const sortedRows = useMemo(() => {
+  const sortedRows: TableRateRow[] = useMemo(() => {
     const sorted = [...rows];
+
     sorted.sort((a, b) => {
-      const av = a[orderBy];
-      const bv = b[orderBy];
-
-      if (typeof av === 'string' && typeof bv === 'string') {
-        return order === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+      if (orderBy === 'date') {
+        const aDate = new Date(a.date).getTime();
+        const bDate = new Date(b.date).getTime();
+        return order === 'asc' ? aDate - bDate : bDate - aDate;
       }
 
-      if (typeof av === 'number' && typeof bv === 'number') {
-        return order === 'asc' ? av - bv : bv - av;
-      }
+      const av = a.rates[orderBy];
+      const bv = b.rates[orderBy];
 
-      return 0;
+      return order === 'asc' ? av - bv : bv - av;
     });
+
     return sorted;
   }, [rows, orderBy, order]);
 

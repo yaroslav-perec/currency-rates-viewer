@@ -1,12 +1,13 @@
 import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
+import type { TableRateRow } from 'src/modules/currencies/components/currency-table/types';
 import { useTableSort } from '../useTableSort';
 
-const rows = [
-  { date: '2025-01-03', name: 'Charlie', value: 3 },
-  { date: '2025-01-01', name: 'Alice', value: 1 },
-  { date: '2025-01-02', name: 'Bob', value: 2 },
-] as Record<string, string | number>[];
+const rows: TableRateRow[] = [
+  { date: '2025-01-03', rates: { usd: 3, eur: 5 } },
+  { date: '2025-01-01', rates: { usd: 1, eur: 7 } },
+  { date: '2025-01-02', rates: { usd: 2, eur: 6 } },
+];
 
 describe('useTableSort', () => {
   it('initializes with default key and desc order', () => {
@@ -16,55 +17,57 @@ describe('useTableSort', () => {
   });
 
   it('sorts numerically ascending and descending', () => {
-    const { result } = renderHook(() => useTableSort(rows, 'value'));
+    const { result } = renderHook(() => useTableSort(rows, 'usd'));
 
     // initial (desc)
-    let sorted = result.current.sortedRows.map((r) => r.value);
+    let sorted = result.current.sortedRows.map((r) => r.rates.usd);
     expect(sorted).toEqual([3, 2, 1]);
 
     // toggle to asc
-    act(() => result.current.handleSort('value'));
-    sorted = result.current.sortedRows.map((r) => r.value);
+    act(() => result.current.handleSort('usd'));
+    sorted = result.current.sortedRows.map((r) => r.rates.usd);
     expect(sorted).toEqual([1, 2, 3]);
 
     // toggle back to desc
-    act(() => result.current.handleSort('value'));
-    sorted = result.current.sortedRows.map((r) => r.value);
+    act(() => result.current.handleSort('usd'));
+    sorted = result.current.sortedRows.map((r) => r.rates.usd);
     expect(sorted).toEqual([3, 2, 1]);
   });
 
-  it('sorts alphabetically ascending and descending', () => {
-    const { result } = renderHook(() => useTableSort(rows, 'name'));
+  it('sorts by string date ascending and descending', () => {
+    const { result } = renderHook(() => useTableSort(rows, 'date'));
 
     // initial (desc)
-    let sorted = result.current.sortedRows.map((r) => r.name);
-    expect(sorted).toEqual(['Charlie', 'Bob', 'Alice']);
+    let sorted = result.current.sortedRows.map((r) => r.date);
+    expect(sorted).toEqual(['2025-01-03', '2025-01-02', '2025-01-01']);
 
     // toggle to asc
-    act(() => result.current.handleSort('name'));
-    sorted = result.current.sortedRows.map((r) => r.name);
-    expect(sorted).toEqual(['Alice', 'Bob', 'Charlie']);
+    act(() => result.current.handleSort('date'));
+    sorted = result.current.sortedRows.map((r) => r.date);
+    expect(sorted).toEqual(['2025-01-01', '2025-01-02', '2025-01-03']);
   });
 
   it('resets to ascending when switching columns', () => {
-    const { result } = renderHook(() => useTableSort(rows, 'name'));
+    const { result } = renderHook(() => useTableSort(rows, 'usd'));
 
-    // First, toggle same column to descending
-    act(() => result.current.handleSort('name'));
+    // First, toggle same column → descending → ascending
+    act(() => result.current.handleSort('usd'));
     expect(result.current.order).toBe<'asc'>('asc');
 
-    // Then, switch column → should reset to asc
-    act(() => result.current.handleSort('value'));
-    expect(result.current.orderBy).toBe('value');
+    // Then, switch to eur → should reset to asc
+    act(() => result.current.handleSort('eur'));
+    expect(result.current.orderBy).toBe('eur');
     expect(result.current.order).toBe<'asc'>('asc');
   });
 
   it('handles mixed or invalid values gracefully', () => {
-    const mixed = [
-      { date: '2025-01-01', value: 'abc' as unknown as number },
-      { date: '2025-01-02', value: 123 },
+    const mixed: TableRateRow[] = [
+      { date: '2025-01-01', rates: { usd: NaN } },
+      { date: '2025-01-02', rates: { usd: 123 } },
     ];
-    const { result } = renderHook(() => useTableSort(mixed, 'value'));
+
+    const { result } = renderHook(() => useTableSort(mixed, 'usd'));
+
     // should not crash and return same-length array
     expect(result.current.sortedRows.length).toBe(2);
   });

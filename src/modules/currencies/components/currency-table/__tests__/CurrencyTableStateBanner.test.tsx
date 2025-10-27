@@ -4,12 +4,12 @@ import { CurrencyTableStateBanner } from '../CurrencyTableStateBanner';
 
 describe('<CurrencyTableStateBanner />', () => {
   it('renders nothing when not loading and no error', () => {
-    const { container } = render(<CurrencyTableStateBanner loading={false} error={null} />);
+    const { container } = render(<CurrencyTableStateBanner loading={false} error={undefined} />);
     expect(container.firstChild).toBeNull();
   });
 
   it('renders loading state with progress bar and text', () => {
-    render(<CurrencyTableStateBanner loading={true} error={null} />);
+    render(<CurrencyTableStateBanner loading={true} error={undefined} />);
 
     // MUI LinearProgress has role "progressbar"
     expect(screen.getByRole('progressbar')).toBeInTheDocument();

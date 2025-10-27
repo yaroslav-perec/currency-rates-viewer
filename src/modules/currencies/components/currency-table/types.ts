@@ -1,6 +1,6 @@
 export interface TableRateRow {
-	date: string;
-	[key: string]: string | number;
+  date: string;
+  rates: Record<string, number>;
 }
 
 export type Order = 'asc' | 'desc';

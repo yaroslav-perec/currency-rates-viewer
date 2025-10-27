@@ -1,14 +1,15 @@
 export type CurrencyCode = string;
 
 export interface CurrenciesResponse {
-	[code: CurrencyCode]: string;
-}
-
-interface CurrencyRates {
-	[key: CurrencyCode]: number;
+  [code: CurrencyCode]: string;
 }
 
 export interface RatesResponse {
-	date: string;
-	[key: CurrencyCode]: CurrencyRates | string;
+  date: string;
+  [base: CurrencyCode]: Record<string, number> | string;
+}
+
+export interface RatesRequestParams {
+  date: string;
+  base: CurrencyCode;
 }
