@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import { Box, Paper, Table, TableContainer } from '@mui/material';
 import { useAppSelector } from 'src/redux/hooks';
 import { useRatesForLast7Days } from '../../hooks/useRatesForLast7Days';
+import { DEFAULT_SORT_KEY } from '../../constants';
 import { useTableSort } from './useTableSort';
 import { CurrencyTableHeader } from './CurrencyTableHeader';
 import { CurrencyTableBody } from './CurrencyTableBody';
@@ -18,6 +20,12 @@ export function CurrencyTable({ selectedDate }: Props) {
 
   const { order, orderBy, handleSort, sortedRows } = useTableSort(rows);
   const showData = !loading && !error && sortedRows.length > 0;
+
+  useEffect(() => {
+    if (orderBy !== DEFAULT_SORT_KEY && !compared.includes(orderBy)) {
+      handleSort(DEFAULT_SORT_KEY); // reset to date
+    }
+  }, [compared, orderBy, handleSort]);
 
   return (
     <Box sx={{ position: 'relative' }}>

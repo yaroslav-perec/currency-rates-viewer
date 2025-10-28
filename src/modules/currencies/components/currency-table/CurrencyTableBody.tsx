@@ -1,5 +1,6 @@
 import { TableBody, TableCell, TableRow } from '@mui/material';
 import type { TableRateRow } from '../../types/table';
+import { DEFAULT_SORT_KEY } from '../../constants';
 
 function formatRate(n?: number) {
   if (n == null || Number.isNaN(n)) return '—';
@@ -24,8 +25,8 @@ export function CurrencyTableBody({ compared, sortedRows, orderBy }: Props) {
               left: 0,
               zIndex: 2,
               bgcolor: 'background.paper',
-              fontWeight: orderBy === 'date' ? 600 : 400,
-              color: orderBy === 'date' ? 'primary.main' : 'inherit',
+              fontWeight: orderBy === DEFAULT_SORT_KEY ? 600 : 400,
+              color: orderBy === DEFAULT_SORT_KEY ? 'primary.main' : 'inherit',
             }}
           >
             {row.date}

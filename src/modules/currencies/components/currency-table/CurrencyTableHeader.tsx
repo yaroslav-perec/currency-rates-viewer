@@ -1,5 +1,6 @@
 import { TableHead, TableRow, TableCell, TableSortLabel } from '@mui/material';
 import type { SortOrder } from 'src/shared/types/sort';
+import { DEFAULT_SORT_KEY } from 'src/modules/currencies/constants';
 
 interface Props {
   compared: string[];
@@ -14,12 +15,12 @@ export function CurrencyTableHeader({ compared, order, orderBy, onSort }: Props)
       <TableRow>
         <TableCell
           sx={{ position: 'sticky', left: 0, zIndex: 3, bgcolor: 'grey.100' }}
-          sortDirection={orderBy === 'date' ? order : false}
+          sortDirection={orderBy === DEFAULT_SORT_KEY ? order : false}
         >
           <TableSortLabel
-            active={orderBy === 'date'}
-            direction={orderBy === 'date' ? order : 'asc'}
-            onClick={() => onSort('date')}
+            active={orderBy === DEFAULT_SORT_KEY}
+            direction={orderBy === DEFAULT_SORT_KEY ? order : 'asc'}
+            onClick={() => onSort(DEFAULT_SORT_KEY)}
           >
             Date
           </TableSortLabel>
