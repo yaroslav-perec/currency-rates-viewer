@@ -8,23 +8,23 @@
  *   });
  */
 export function withMockedDate(mockedUtcTime: Date, callback: () => void): void {
-	const RealDate = Date;
+  const RealDate = Date;
 
-	class MockDate extends Date {
-		constructor() {
-			super(mockedUtcTime.getTime());
-		}
-		static now() {
-			return mockedUtcTime.getTime();
-		}
-	}
+  class MockDate extends Date {
+    constructor() {
+      super(mockedUtcTime.getTime());
+    }
+    static now() {
+      return mockedUtcTime.getTime();
+    }
+  }
 
-	// Type-safe override for globalThis
-	globalThis.Date = MockDate as unknown as DateConstructor;
+  // Type-safe override for globalThis
+  globalThis.Date = MockDate as unknown as DateConstructor;
 
-	try {
-		callback();
-	} finally {
-		globalThis.Date = RealDate;
-	}
+  try {
+    callback();
+  } finally {
+    globalThis.Date = RealDate;
+  }
 }

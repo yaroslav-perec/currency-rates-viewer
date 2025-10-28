@@ -5,21 +5,21 @@ import { ToolbarPanel } from './components/ToolbarPanel';
 import { CurrencyTable } from './components/currency-table/CurrencyTable';
 
 export default function CurrencyRatesPage() {
-	const [date, setDate] = useState(todayISO());
+  const [date, setDate] = useState(todayISO());
 
-	return (
-		<Paper sx={{ borderRadius: 3, overflow: 'hidden' }}>
-			<ToolbarPanel date={date} onDateChange={setDate} />
+  return (
+    <Paper sx={{ borderRadius: 3, overflow: 'hidden' }}>
+      <ToolbarPanel date={date} onDateChange={setDate} />
 
-			<Divider />
+      <Divider />
 
-			<Box sx={{ p: 3 }}>
-				<Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
-					Exchange Rates ({date})
-				</Typography>
+      <Box sx={{ p: 3 }}>
+        <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+          Exchange Rates ({date})
+        </Typography>
 
-				<CurrencyTable selectedDate={date} />
-			</Box>
-		</Paper>
-	);
+        <CurrencyTable selectedDate={date} />
+      </Box>
+    </Paper>
+  );
 }
