@@ -1,5 +1,5 @@
 import { TableBody, TableCell, TableRow } from '@mui/material';
-import type { TableRateRow } from './types';
+import type { TableRateRow } from '../../types/table';
 
 function formatRate(n?: number) {
   if (n == null || Number.isNaN(n)) return '—';

@@ -1,5 +1,5 @@
 import { last7DaysFrom } from 'src/shared/utils/date';
-import type { TableRateRow } from 'src/modules/currencies/components/currency-table/types';
+import type { TableRateRow } from 'src/modules/currencies/types/table';
 import type { ApiError } from 'src/shared/types/api';
 import { useGetRatesByDateAndBaseQuery } from '../api/currencyApi';
 

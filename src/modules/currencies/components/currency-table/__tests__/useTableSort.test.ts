@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import type { TableRateRow } from 'src/modules/currencies/components/currency-table/types';
+import type { TableRateRow } from 'src/modules/currencies/types/table';
 import { useTableSort } from '../useTableSort';
 
 const rows: TableRateRow[] = [

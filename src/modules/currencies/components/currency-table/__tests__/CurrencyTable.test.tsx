@@ -1,55 +1,57 @@
 import { describe, it, vi, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { CurrencyTable } from '../CurrencyTable';
+import { screen } from '@testing-library/react';
+import { renderWithStore } from 'src/shared/tests/renderWithStore';
 import * as hooks from '../../../hooks/useRatesForLast7Days';
+import { CurrencyTable } from '../CurrencyTable';
 
 vi.mock('../../../hooks/useRatesForLast7Days');
-
 vi.mock('../useTableSort', () => ({
   useTableSort: () => ({
     order: 'asc',
     orderBy: 'usd',
     handleSort: vi.fn(),
-    sortedRows: [{ date: '2025-10-15', usd: 1.23, eur: 0.89, jpy: 150 }],
+    sortedRows: [{ date: '2025-10-15', rates: { usd: 1.23, eur: 0.89, jpy: 150 } }],
   }),
 }));
 
 describe('<CurrencyTable />', () => {
-  it('renders rows when data is loaded', () => {
+  it('renders table rows with formatted rates', () => {
     vi.mocked(hooks.useRatesForLast7Days).mockReturnValue({
-      data: [{ date: '2025-10-15', usd: 1.23, eur: 0.89, jpy: 150 }],
+      data: [{ date: '2025-10-15', rates: { usd: 1.23, eur: 0.89, jpy: 150 } }],
       loading: false,
       error: undefined,
     });
 
-    render(<CurrencyTable selectedDate="2025-10-15" />);
+    renderWithStore(<CurrencyTable selectedDate="2025-10-15" />);
 
-    expect(screen.getByText('1.23')).toBeInTheDocument();
-    expect(screen.getByText('0.89')).toBeInTheDocument();
+    expect(screen.getByText('1.2300')).toBeInTheDocument();
+    expect(screen.getByText('0.8900')).toBeInTheDocument();
+    expect(screen.getByText('150.0000')).toBeInTheDocument();
   });
 
-  it('shows banner when loading', () => {
+  it('shows a loading state', () => {
     vi.mocked(hooks.useRatesForLast7Days).mockReturnValue({
       data: [],
       loading: true,
       error: undefined,
     });
 
-    render(<CurrencyTable selectedDate="2025-10-15" />);
+    renderWithStore(<CurrencyTable selectedDate="2025-10-15" />);
 
-    // CurrencyTableStateBanner should be rendered
-    expect(screen.getByTestId('table-state-banner')).toBeInTheDocument();
+    // match text instead of relying on testid
+    expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
-  it('shows banner when error occurs', () => {
+  it('shows an error message when API fails', () => {
     vi.mocked(hooks.useRatesForLast7Days).mockReturnValue({
       data: [],
       loading: false,
-      error: new Error('Failed to fetch'),
+      error: { status: 500, data: 'Failed to fetch' },
     });
 
-    render(<CurrencyTable selectedDate="2025-10-15" />);
+    renderWithStore(<CurrencyTable selectedDate="2025-10-15" />);
 
-    expect(screen.getByTestId('table-state-banner')).toBeInTheDocument();
+    // match text for "error" or "failed"
+    expect(screen.getByText(/failed|error|unable to fetch/i)).toBeInTheDocument();
   });
 });

@@ -46,7 +46,10 @@ describe('useRatesForLast7Days', () => {
     const { result } = renderHook(() => useRatesForLast7Days('2025-10-07', 'eur'));
 
     expect(result.current.data).toHaveLength(7);
-    expect(result.current.data[0]).toMatchObject({ date: '2025-10-01', usd: 1.1 });
+    expect(result.current.data[0]).toEqual({
+      date: '2025-10-01',
+      rates: { usd: 1.1 },
+    });
     expect(result.current.loading).toBe(false);
     expect(result.current.error).toBeUndefined();
   });
@@ -112,6 +115,6 @@ describe('useRatesForLast7Days', () => {
     }
 
     const { result } = renderHook(() => useRatesForLast7Days('2025-10-07', 'eur'));
-    expect(result.current.data).toEqual([{ date: '2025-10-02', usd: 1.15 }]);
+    expect(result.current.data).toEqual([{ date: '2025-10-02', rates: { usd: 1.15 } }]);
   });
 });

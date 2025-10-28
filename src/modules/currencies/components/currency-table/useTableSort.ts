@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react';
-import type { Order, TableRateRow } from './types';
+import type { SortOrder } from 'src/shared/types/sort';
+import type { TableRateRow } from '../../types/table';
 
 export function useTableSort(rows: TableRateRow[], defaultKey = 'date') {
   const [orderBy, setOrderBy] = useState<string>(defaultKey);
-  const [order, setOrder] = useState<Order>('desc');
+  const [order, setOrder] = useState<SortOrder>('desc');
 
   const handleSort = (key: string) => {
     setOrder((prevOrder) => {

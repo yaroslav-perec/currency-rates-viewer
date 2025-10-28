@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Table } from '@mui/material';
 import { CurrencyTableBody } from '../CurrencyTableBody';
-import type { TableRateRow } from '../types';
+import type { TableRateRow } from '../../../types/table';
 
 describe('<CurrencyTableBody />', () => {
   const compared = ['usd', 'eur'];

@@ -1,14 +1,14 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Table } from '@mui/material';
 import { describe, it, expect, vi } from 'vitest';
+import type { SortOrder } from 'src/shared/types/sort';
 import { CurrencyTableHeader } from '../CurrencyTableHeader';
-import type { Order } from '../types';
 
 describe('<CurrencyTableHeader />', () => {
   const mockOnSort = vi.fn();
   const baseProps = {
     compared: ['usd', 'eur', 'jpy'],
-    order: 'asc' as Order,
+    order: 'asc' as SortOrder,
     orderBy: 'date',
     onSort: mockOnSort,
   };
